@@ -1,7 +1,7 @@
-window.addEventListener('DOMContentLoaded', (event) => {
-    const productTitle = document.querySelector('.product-info__title');
+$(document).ready(function () {
+    var productTitle = $('.product-info__title');
 
-    if (productTitle) {
-        productTitle.style.color = 'red';
+    if (productTitle.length) {
+        productTitle.css('cssText', 'color: red !important;');
     }
 });

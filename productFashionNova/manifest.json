@@ -3,13 +3,18 @@
   "name": "Change Product's Title Color",
   "version": "1.0",
   "description": "Changing the product's title color when on the product page",
-  "permissions": ["activeTab"],
+  "permissions": [
+    "activeTab"
+  ],
   "content_scripts": [
     {
-      "matches": ["*://www.fashionnova.com/products/*"],
-      "js": ["content.js"],
-      "css": ["styles.css"]
-
+      "matches": [
+        "*://www.fashionnova.com/products/*"
+      ],
+      "js": [
+        "jquery.min.js",
+        "content.js"
+      ]
     }
   ],
   "action": {
