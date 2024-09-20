@@ -10,7 +10,6 @@
     {
       "matches": ["*://www.fashionnova.com/products/*"],
       "js": [
-        "dist/content.bundle.js",
         "dist/popup.bundle.js"
       ]
     }
