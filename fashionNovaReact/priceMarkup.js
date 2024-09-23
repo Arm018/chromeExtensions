@@ -1,42 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const PriceMarkup = ({ product }) => {
     const [markupValue, setMarkupValue] = useState('');
     const [markupType, setMarkupType] = useState('amount');
-    const [finalPrice, setFinalPrice] = useState(parseFloat(product.price) || 0);
+    const [finalPrice, setFinalPrice] = useState(0);
 
-    const handleMarkupValueChange = (e) => {
-        const newMarkupValue = parseFloat(e.target.value) || 0;
-        setMarkupValue(newMarkupValue);
+    useEffect(() => {
+        updateFinalPrice();
+    }, [markupValue, markupType, product.price]);
 
-        const originalPrice = parseFloat(product.price) || 0;
+    const updateFinalPrice = () => {
+        const originalPrice = parseFloat(product.price.replace(/[^0-9.-]+/g, "")) || 0;
+        const markup = parseFloat(markupValue) || 0;
+
+        let calculatedFinalPrice = originalPrice;
 
         if (markupType === 'amount') {
-            setFinalPrice(originalPrice + newMarkupValue);
+            calculatedFinalPrice = originalPrice + markup;
         } else if (markupType === 'percent') {
-            setFinalPrice(originalPrice + (originalPrice * (newMarkupValue / 100)));
+            calculatedFinalPrice = originalPrice + (originalPrice * (markup / 100));
         }
+
+        setFinalPrice(calculatedFinalPrice.toFixed(2));
+    };
+
+    const handleMarkupValueChange = (e) => {
+        const value = e.target.value;
+        setMarkupValue(value);
     };
 
     const handleMarkupTypeChange = (e) => {
-        const newMarkupType = e.target.value;
-        setMarkupType(newMarkupType);
-
-        const originalPrice = parseFloat(product.price) || 0;
-        const currentMarkupValue = parseFloat(markupValue) || 0;
-
-        if (newMarkupType === 'amount') {
-            setFinalPrice(originalPrice + currentMarkupValue);
-        } else if (newMarkupType === 'percent') {
-            setFinalPrice(originalPrice + (originalPrice * (currentMarkupValue / 100)));
-        }
+        const value = e.target.value;
+        setMarkupType(value);
     };
 
     return (
         <div className="priceMarkupRow">
             <div>
                 <label className="label">Price</label>
-                <input type="text" value={product.price} className="input" readOnly />
+                <input
+                    type="text"
+                    value={product.price || ''}
+                    className="input"
+                    readOnly
+                />
             </div>
 
             <div>
@@ -68,6 +75,7 @@ const PriceMarkup = ({ product }) => {
                     value={markupValue}
                     onChange={handleMarkupValueChange}
                     className="input"
+                    placeholder="Enter markup value"
                 />
             </div>
         </div>
