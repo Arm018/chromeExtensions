@@ -11,6 +11,7 @@ class ProductController extends Controller
 {
     public function save(ProductRequest $request): JsonResponse
     {
+
         $product = new Product();
         $product->fill($request->validated());
         $product->save();

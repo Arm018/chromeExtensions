@@ -23,12 +23,19 @@ class ProductRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
-            'productId' => 'required|string',
-            'productType' => 'required|string',
+            'productId' => 'required',
+            'productType' => 'required',
             'collection' => 'nullable|string',
             'quantity' => 'required|integer',
             'description' => 'nullable|string',
-            'price' => 'required|string',
+            'price' => 'required',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'price' => preg_replace('/[^0-9.]/', '', $this->price),
+        ]);
     }
 }
